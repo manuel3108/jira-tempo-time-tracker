@@ -22,5 +22,7 @@ async function makeApiCall<T>(path: string): Promise<T> {
 }
 
 export async function searchIssues(query: string): Promise<IssueSearchResponse> {
-	return await makeApiCall<IssueSearchResponse>(`rest/api/3/issue/picker?query=${query}`);
+	return await makeApiCall<IssueSearchResponse>(
+		`rest/api/3/issue/picker?query=${query}&currentJQL=`
+	);
 }

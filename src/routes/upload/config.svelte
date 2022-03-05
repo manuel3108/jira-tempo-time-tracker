@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { CONFIG_COOKIE_NAME } from '$lib/scripts/Defaults';
-
 	import Cookies from 'js-cookie';
+
+	let showLogin = false;
 
 	function onFileSelected(event) {
 		let image = event.target.files[0];
@@ -11,6 +12,8 @@
 			const data: string = e.target.result as string;
 			const json = JSON.parse(data);
 			Cookies.set(CONFIG_COOKIE_NAME, JSON.stringify(json));
+
+			showLogin = true;
 		};
 	}
 </script>
@@ -22,4 +25,6 @@
 	</label>
 </div>
 
-<a href="/" class="button is-primary">Login</a>
+{#if showLogin}
+	<a href="/login/jira/redirect" class="button is-primary">Login</a>
+{/if}

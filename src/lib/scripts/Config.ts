@@ -8,6 +8,10 @@ interface Config {
 	};
 }
 
+export function configExists(): boolean {
+	return Cookies.get(CONFIG_COOKIE_NAME) != undefined;
+}
+
 export function loadConfig(): Config {
 	const config = JSON.parse(Cookies.get(CONFIG_COOKIE_NAME));
 	return config;

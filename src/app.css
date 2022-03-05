@@ -37,6 +37,8 @@ html {
 	background-color: var(--medium-grey);
 }
 
+textarea,
+input[type='time'],
 input[type='text'],
 input[type='file'],
 select {

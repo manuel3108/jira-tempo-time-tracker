@@ -1,24 +1,33 @@
 <script lang="ts">
-	import { searchIssues } from '$lib/scripts/JiraClient';
-	import type { Issue } from '$lib/scripts/models/IssueSearchResponse';
+	import { goto } from '$app/navigation';
+	import { configExists } from '$lib/scripts/Config';
+	import TaskData from '$lib/scripts/models/TaskData';
+	import Task from '$lib/Task.svelte';
+	import { onMount } from 'svelte';
 
-	let issues: Issue[] = [];
+	let tasks: TaskData[] = [];
 
-	async function search(e) {
-		const value = e.target.value;
+	onMount(() => {
+		if (!configExists()) {
+			goto('/upload/config');
+		} else {
+			addTask();
+		}
+	});
 
-		if (!value) return;
-
-		const content = await searchIssues(e.target.value);
-		issues = content.sections[0].issues;
+	function addTask() {
+		tasks = [...tasks, new TaskData()];
 	}
 </script>
 
-<input type="text" on:keyup={search} />
-
-{#each issues as issue}
-	<div>
-		<div>{@html issue.keyHtml}</div>
-		<div>{@html issue.summary}</div>
-	</div>
+{#each tasks as task}
+	<Task description={task.description} issueKey={task.issue} />
 {/each}
+
+<button class="button is-primary mt-1" on:click={addTask}>Add Task</button>
+
+<style>
+	button {
+		width: 100%;
+	}
+</style>
