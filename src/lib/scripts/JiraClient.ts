@@ -3,7 +3,7 @@ import type { IssueSearchResponse } from './models/IssueSearchResponse';
 
 function getBaseUrl() {
 	const config = loadConfig();
-	return `https://api.atlassian.com/ex/jira/${config.jira.appId}/`;
+	return `https://api.atlassian.com/ex/jira/${config.jira.cloudId}/`;
 }
 
 async function makeApiCall<T>(path: string): Promise<T> {
