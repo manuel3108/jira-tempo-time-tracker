@@ -5,6 +5,7 @@ interface Config {
 	jira: {
 		clientId: string;
 		clientSecret: string;
+		appId: string;
 	};
 }
 

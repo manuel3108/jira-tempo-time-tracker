@@ -1,8 +1,9 @@
-import { getJiraAccessToken } from './Config';
+import { getJiraAccessToken, loadConfig } from './Config';
 import type { IssueSearchResponse } from './models/IssueSearchResponse';
 
 function getBaseUrl() {
-	return 'https://api.atlassian.com/ex/jira/a2287409-a192-4405-be5b-b30a3c375bfc/';
+	const config = loadConfig();
+	return `https://api.atlassian.com/ex/jira/${config.jira.appId}/`;
 }
 
 async function makeApiCall<T>(path: string): Promise<T> {
