@@ -1,0 +1,1 @@
+function t(e){return`https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=${e}&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=${r()}&state=YOUR_USER_BOUND_VALUE&response_type=code&prompt=consent`}function n(){return window.location.origin+"/login/jira/callback"}function r(){return encodeURIComponent(n())}export{t as a,n as g};
