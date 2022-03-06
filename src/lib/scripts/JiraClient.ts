@@ -1,15 +1,45 @@
-import { getJiraAccessToken, loadConfig } from './Config';
+import { getJiraAccessToken, getJiraRefreshToken, loadConfig, saveJiraTokens } from './Config';
 import type { IssueSearchResponse } from './models/IssueSearchResponse';
+import jwt_decode from 'jwt-decode';
+import { DateTime } from 'luxon';
 
 function getBaseUrl() {
 	const config = loadConfig();
 	return `https://api.atlassian.com/ex/jira/${config.jira.cloudId}/`;
 }
 
+async function updateToken() {
+	const config = loadConfig();
+
+	const data = {
+		grant_type: 'refresh_token',
+		client_id: config.jira.clientId,
+		client_secret: config.jira.clientSecret,
+		refresh_token: getJiraRefreshToken()
+	};
+
+	const response = await fetch('https://auth.atlassian.com/oauth/token', {
+		method: 'POST',
+		body: JSON.stringify(data),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
+
+	const json = await response.json();
+	console.log(json);
+	saveJiraTokens(json.access_token, json.refresh_token);
+}
+
 async function makeApiCall<T>(path: string): Promise<T> {
 	const baseUrl = getBaseUrl();
 	const token = getJiraAccessToken();
 
+	const decoded: any = jwt_decode(token);
+	if (DateTime.fromMillis(decoded.exp * 1000) < DateTime.now()) {
+		console.log('updated token with refresh token');
+		await updateToken();
+	}
 	const response = await fetch(`${baseUrl}${path}`, {
 		method: 'GET',
 		headers: {

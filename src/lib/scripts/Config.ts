@@ -1,4 +1,4 @@
-import { CONFIG_COOKIE_NAME, JIRA_ACCESS_TOKEN_NAME } from './Defaults';
+import { CONFIG_COOKIE_NAME, JIRA_ACCESS_TOKEN_NAME, JIRA_REFRESH_TOKEN_NAME } from './Defaults';
 import Cookies from 'js-cookie';
 
 interface Config {
@@ -18,10 +18,15 @@ export function loadConfig(): Config {
 	return config;
 }
 
-export function saveJiraTokens(accessToken: string): void {
+export function saveJiraTokens(accessToken: string, refreshToken: string): void {
 	Cookies.set(JIRA_ACCESS_TOKEN_NAME, accessToken);
+	Cookies.set(JIRA_REFRESH_TOKEN_NAME, refreshToken);
 }
 
 export function getJiraAccessToken(): string {
 	return Cookies.get(JIRA_ACCESS_TOKEN_NAME);
+}
+
+export function getJiraRefreshToken(): string {
+	return Cookies.get(JIRA_REFRESH_TOKEN_NAME);
 }

@@ -12,6 +12,8 @@ specifiers:
   eslint-config-prettier: ^8.3.0
   eslint-plugin-svelte3: ^3.2.1
   js-cookie: ^3.0.1
+  jwt-decode: ^3.1.2
+  luxon: ^2.3.1
   postcss: ^8.4.5
   prettier: ^2.4.1
   prettier-plugin-svelte: ^2.4.0
@@ -24,10 +26,11 @@ specifiers:
 
 dependencies:
   js-cookie: 3.0.1
+  jwt-decode: 3.1.2
 
 devDependencies:
   '@sveltejs/adapter-static': 1.0.0-next.29
-  '@sveltejs/kit': 1.0.0-next.293_svelte@3.46.2
+  '@sveltejs/kit': 1.0.0-next.294_svelte@3.46.2
   '@tailwindcss/forms': 0.4.0_tailwindcss@3.0.15
   '@tailwindcss/typography': 0.5.0_tailwindcss@3.0.15
   '@typescript-eslint/eslint-plugin': 4.33.0_3289a875d95a672b97ebf589745c66ef
@@ -36,6 +39,7 @@ devDependencies:
   eslint: 7.32.0
   eslint-config-prettier: 8.3.0_eslint@7.32.0
   eslint-plugin-svelte3: 3.4.0_eslint@7.32.0+svelte@3.46.2
+  luxon: 2.3.1
   postcss: 8.4.5
   prettier: 2.5.1
   prettier-plugin-svelte: 2.6.0_prettier@2.5.1+svelte@3.46.2
@@ -142,8 +146,8 @@ packages:
       tiny-glob: 0.2.9
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.293_svelte@3.46.2:
-    resolution: {integrity: sha512-LoCCojxxbWPYlWOeq+eEP5BFci0sTFb0iB9w26GRpGIh9A1Z4z3pfh3VGW3J0zbm/VW/9sUX7fte5S4DuYQqVA==}
+  /@sveltejs/kit/1.0.0-next.294_svelte@3.46.2:
+    resolution: {integrity: sha512-whTYeri/oaV672KErlhCAvAawlsnd8iu/MQmjdu85TApDYolLe8FDTg6GQ55+0IJbx1N7dOer/HopWzKudPgFA==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
@@ -1301,6 +1305,10 @@ packages:
     resolution: {integrity: sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=}
     dev: true
 
+  /jwt-decode/3.1.2:
+    resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
+    dev: false
+
   /kleur/4.1.4:
     resolution: {integrity: sha512-8QADVssbrFjivHWQU7KkMgptGTl6WAcSdlbBPY4uNF+mWr6DGcKrvY2w4FQJoXch7+fKMjj0dRrL75vk3k23OA==}
     engines: {node: '>=6'}
@@ -1348,6 +1356,11 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+    dev: true
+
+  /luxon/2.3.1:
+    resolution: {integrity: sha512-I8vnjOmhXsMSlNMZlMkSOvgrxKJl0uOsEzdGgGNZuZPaS9KlefpE9KV95QFftlJSC+1UyCC9/I69R02cz/zcCA==}
+    engines: {node: '>=12'}
     dev: true
 
   /magic-string/0.25.7:

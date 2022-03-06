@@ -32,7 +32,7 @@
 		});
 
 		const json = await response.json();
-		saveJiraTokens(json.access_token);
+		saveJiraTokens(json.access_token, json.refresh_token);
 	});
 </script>
 

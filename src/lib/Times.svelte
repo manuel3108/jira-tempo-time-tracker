@@ -1,22 +1,47 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import Duration from './Duration.svelte';
 	import DurationData from './scripts/models/DurationData';
+	import { Duration as DurationDate } from 'luxon';
 
 	export let durations: DurationData[] = [];
+
+	let durationAsString = '--:--';
+	const eventDispatcher = createEventDispatcher();
 
 	onMount(() => {
 		durations = [new DurationData()];
 	});
+
+	function onChange() {
+		let totalDuration = DurationDate.fromMillis(0);
+
+		durations.forEach((duration) => {
+			if (
+				duration.duration.values != undefined &&
+				duration.duration.values.milliseconds != undefined
+			) {
+				totalDuration = totalDuration.plus(duration.duration);
+			}
+		});
+
+		durationAsString = totalDuration.toFormat('hh:mm');
+
+		eventDispatcher('change');
+	}
 
 	function addDuration() {
 		durations = [...durations, new DurationData()];
 	}
 </script>
 
-{#each durations as duration}
+<div class="mb-1">
+	Duration: {durationAsString}
+</div>
+
+{#each durations as { duration, startTime, endTime }}
 	<div class="mb-2">
-		<Duration />
+		<Duration bind:duration bind:startTime bind:endTime on:change={onChange} />
 	</div>
 {/each}
 

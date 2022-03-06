@@ -1,26 +1,49 @@
 <script lang="ts">
-	export let duration;
-	export let startTime;
-	export let endTime;
+	import { DateTime, Duration } from 'luxon';
+	import { createEventDispatcher } from 'svelte';
+
+	export let duration: Duration;
+	export let startTime: DateTime;
+	export let endTime: DateTime;
 
 	let startElement: HTMLInputElement;
 	let endElement: HTMLInputElement;
 
+	const eventDispatcher = createEventDispatcher();
+
 	function onChange() {
-		duration = parseInt(endElement.value) - parseInt(startElement.value);
-		console.log(endElement.value);
+		endTime = DateTime.fromFormat(endElement.value, 'HH:mm');
+		startTime = DateTime.fromFormat(startElement.value, 'HH:mm');
+		duration = endTime.diff(startTime);
+
+		eventDispatcher('change');
+	}
+
+	function nowAsString() {
+		let dt = DateTime.local();
+		return dt.toFormat('HH:mm');
+	}
+
+	function startWork() {
+		startElement.value = nowAsString();
+	}
+
+	function endWork() {
+		endElement.value = nowAsString();
 	}
 </script>
 
-<input bind:this={startElement} type="time" class="start" on:change={onChange} />
-<input bind:this={endElement} type="time" class="end" on:change={onChange} />
+<div class="duration">
+	<input bind:this={startElement} type="time" class="start" on:change={onChange} />
+	<button class="button is-primary" on:click={startWork}>Now</button>
+
+	<input bind:this={endElement} type="time" class="end" on:change={onChange} />
+	<button class="button is-primary" on:click={endWork}>Now</button>
+</div>
 
 <style>
-	input {
-		width: 48%;
-	}
-
-	.end {
-		float: right;
+	.duration {
+		display: flex;
+		justify-content: space-between;
 	}
 </style>

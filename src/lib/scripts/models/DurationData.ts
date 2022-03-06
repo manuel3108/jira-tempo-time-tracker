@@ -1,5 +1,7 @@
+import type { DateTime, Duration } from 'luxon';
+
 export default class DurationData {
-	public startTime;
-	public endTime;
-	public duration;
+	public startTime: DateTime;
+	public endTime: DateTime;
+	public duration: Duration;
 }
