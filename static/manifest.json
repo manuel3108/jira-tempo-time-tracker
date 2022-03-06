@@ -1,0 +1,16 @@
+{
+    "name": "Jira Time Tracker",
+    "short_name": "Jira Time Tracker",
+    "lang": "de-DE",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#1f2424",
+    "background_color": "#1f2424",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "234*266",
+            "type": "image/png"
+        }
+    ]
+}
