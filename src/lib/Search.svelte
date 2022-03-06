@@ -29,13 +29,15 @@
 <div class="search">
 	<input type="text" bind:this={searchElement} on:keyup={search} placeholder="issue" />
 
-	<div class="suggestions" class:open={searchResultsOpen}>
+	<div class="suggestions p-2" class:open={searchResultsOpen}>
 		{#each sections as section}
-			<div>
+			<div class="section pb-2">
 				{section.label}
 				{#each section.issues as issue}
 					<div>
-						<button on:click={() => selectResult(issue.key, issue.summaryText)}
+						<button
+							class="p-1 rounded-sm"
+							on:click={() => selectResult(issue.key, issue.summaryText)}
 							>{@html issue.keyHtml} {@html issue.summary}</button
 						>
 					</div>
@@ -56,7 +58,7 @@
 
 	.suggestions {
 		position: absolute;
-		background: red;
+		background: #606060;
 		left: 0;
 		right: 0;
 		max-height: 300px;
@@ -66,5 +68,15 @@
 
 	.suggestions.open {
 		display: block;
+	}
+
+	button {
+		width: 100%;
+		text-align: left;
+	}
+
+	button:focus,
+	button:hover {
+		background-color: #505050;
 	}
 </style>
