@@ -3,7 +3,7 @@
     "short_name": "Jira Time Tracker",
     "theme_color": "#1f2424",
     "background_color": "#1f2424",
-    "display": "browser",
+    "display": "standalone",
     "orientation": "portrait",
     "scope": "/",
     "start_url": "/",
