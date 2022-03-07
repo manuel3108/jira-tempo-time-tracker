@@ -11,7 +11,7 @@
 		reader.onload = (e) => {
 			const data: string = e.target.result as string;
 			const json = JSON.parse(data);
-			Cookies.set(CONFIG_COOKIE_NAME, JSON.stringify(json));
+			localStorage.setItem(CONFIG_COOKIE_NAME, JSON.stringify(json));
 
 			showLogin = true;
 		};

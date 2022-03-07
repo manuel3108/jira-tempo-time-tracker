@@ -26,10 +26,14 @@
 
 	function startWork() {
 		startElement.value = nowAsString();
+		var event = new Event('change');
+		startElement.dispatchEvent(event);
 	}
 
 	function endWork() {
 		endElement.value = nowAsString();
+		var event = new Event('change');
+		endElement.dispatchEvent(event);
 	}
 </script>
 
