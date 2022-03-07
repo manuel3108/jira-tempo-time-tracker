@@ -33,12 +33,13 @@ async function updateToken() {
 
 async function makeApiCall<T>(path: string): Promise<T> {
 	const baseUrl = getBaseUrl();
-	const token = getJiraAccessToken();
+	let token = getJiraAccessToken();
 
 	const decoded: any = jwt_decode(token);
 	if (DateTime.fromMillis(decoded.exp * 1000) < DateTime.now()) {
 		console.log('updated token with refresh token');
 		await updateToken();
+		token = getJiraAccessToken();
 	}
 	const response = await fetch(`${baseUrl}${path}`, {
 		method: 'GET',
