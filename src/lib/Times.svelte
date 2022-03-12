@@ -5,12 +5,15 @@
 	import { Duration as DurationDate } from 'luxon';
 
 	export let durations: DurationData[] = [];
+	export let durationAsTempoString: string = '';
 
 	let durationAsString = '--:--';
 	const eventDispatcher = createEventDispatcher();
 
 	onMount(() => {
-		durations = [new DurationData()];
+		if (durations == undefined || durations.length == 0) {
+			durations = [new DurationData()];
+		}
 	});
 
 	function onChange() {
@@ -26,6 +29,7 @@
 		});
 
 		durationAsString = totalDuration.toFormat('hh:mm');
+		durationAsTempoString = totalDuration.toFormat(`hh'h' mm'm'`);
 
 		eventDispatcher('change');
 	}

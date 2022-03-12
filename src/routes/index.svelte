@@ -13,7 +13,6 @@
 
 	$: {
 		if (isMounted) {
-			console.log(changeDetected);
 			if (!changeDetected) {
 				window.onbeforeunload = null;
 			} else {
@@ -27,8 +26,6 @@
 	onMount(() => {
 		if (!configExists()) {
 			goto('/upload/config');
-		} else {
-			addTask();
 		}
 
 		isMounted = true;
@@ -44,6 +41,7 @@
 		tasks.forEach((task) => {
 			task.durations.forEach((duration) => {
 				if (
+					duration.duration != undefined &&
 					duration.duration.values != undefined &&
 					duration.duration.values.milliseconds != undefined
 				) {
@@ -73,6 +71,17 @@
 		const date = DateTime.now().toFormat('dd-MM-yyyy');
 		download(JSON.stringify(tasks), `tasks_${date}.json`, 'application/json');
 	}
+
+	function onFileSelected(event) {
+		let image = event.target.files[0];
+		let reader = new FileReader();
+		reader.readAsText(image);
+		reader.onload = (e) => {
+			const data: string = e.target.result as string;
+			tasks = JSON.parse(data);
+			console.log(tasks, 'test');
+		};
+	}
 </script>
 
 <div class="mb-2 header">
@@ -81,6 +90,17 @@
 	</div>
 	<div class="right">
 		<button class="button is-primary mt-1" on:click={downloadTasks}>Download</button>
+		<div class="file-upload-wrapper">
+			<label class="file-upload">
+				<span class="mt-2 text-center leading-normal">Upload</span>
+				<input
+					type="file"
+					class="hidden button is-primary"
+					accept=".json"
+					on:change={(e) => onFileSelected(e)}
+				/>
+			</label>
+		</div>
 	</div>
 </div>
 
@@ -104,5 +124,9 @@
 
 	.add-task {
 		width: 100%;
+	}
+
+	.file-upload-wrapper {
+		display: inline-block;
 	}
 </style>

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { CONFIG_COOKIE_NAME } from '$lib/scripts/Defaults';
-	import Cookies from 'js-cookie';
 
 	let showLogin = false;
 

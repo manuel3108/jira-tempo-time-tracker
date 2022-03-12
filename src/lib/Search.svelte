@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import { searchIssues } from './scripts/JiraClient';
 	import type { Section } from './scripts/models/IssueSearchResponse';
 
@@ -7,6 +9,12 @@
 	let sections: Section[] = [];
 	let searchElement: HTMLInputElement;
 	let searchResultsOpen = false;
+
+	onMount(() => {
+		if (issueKey != undefined) {
+			searchElement.value = issueKey;
+		}
+	});
 
 	async function search(e) {
 		const value = e.target.value;

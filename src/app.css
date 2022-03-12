@@ -19,15 +19,19 @@ html {
 	color: var(--font-color);
 }
 
+.file-upload,
 .button {
 	@apply py-1 px-3 rounded;
+	cursor: pointer;
 }
 
+.file-upload,
 .button.is-primary {
 	@apply text-white;
 	background-color: var(--button-color);
 }
 
+.file-upload:hover,
 .button.is-primary:hover {
 	background-color: var(--button-hover-color);
 }
@@ -49,16 +53,6 @@ select {
 
 .file-upload-wrapper {
 	@apply flex items-center justify-center;
-}
-
-.file-upload {
-	@apply py-1 px-3 border text-center cursor-pointer;
-	background-color: var(--dark-button-color);
-	border-color: var(--input-border-color);
-}
-
-.file-upload:hover {
-	background-color: var(--dark-grey);
 }
 
 input:placeholder-shown {

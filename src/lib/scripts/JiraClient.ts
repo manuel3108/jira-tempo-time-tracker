@@ -27,7 +27,6 @@ async function updateToken() {
 	});
 
 	const json = await response.json();
-	console.log(json);
 	saveJiraTokens(json.access_token, json.refresh_token);
 }
 
@@ -37,7 +36,6 @@ async function makeApiCall<T>(path: string): Promise<T> {
 
 	const decoded: any = jwt_decode(token);
 	if (DateTime.fromMillis(decoded.exp * 1000) < DateTime.now()) {
-		console.log('updated token with refresh token');
 		await updateToken();
 		token = getJiraAccessToken();
 	}

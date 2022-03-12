@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DateTime, Duration } from 'luxon';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let duration: Duration;
 	export let startTime: DateTime;
@@ -10,6 +10,23 @@
 	let endElement: HTMLInputElement;
 
 	const eventDispatcher = createEventDispatcher();
+
+	onMount(() => {
+		if (startTime != undefined || endTime != undefined) {
+			// parse dates as they are saved to strings during json serialization
+			startTime = DateTime.fromISO(startTime);
+			endTime = DateTime.fromISO(endTime);
+
+			startElement.value = startTime.toFormat('HH:mm');
+			endElement.value = endTime.toFormat('HH:mm');
+			var event = new Event('change');
+			endElement.dispatchEvent(event);
+			event = new Event('change');
+			startElement.dispatchEvent(event);
+		} else {
+			startWork();
+		}
+	});
 
 	function onChange() {
 		endTime = DateTime.fromFormat(endElement.value, 'HH:mm');
@@ -39,10 +56,10 @@
 
 <div class="duration">
 	<input bind:this={startElement} type="time" class="start" on:change={onChange} />
-	<button class="button is-primary" on:click={startWork}>Now</button>
+	<button class="button is-primary" on:click={startWork} tabindex="-1">Now</button>
 
 	<input bind:this={endElement} type="time" class="end" on:change={onChange} />
-	<button class="button is-primary" on:click={endWork}>Now</button>
+	<button class="button is-primary" on:click={endWork} tabindex="-1">Now</button>
 </div>
 
 <style>
