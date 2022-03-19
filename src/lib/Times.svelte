@@ -8,6 +8,7 @@
 	export let durationAsTempoString: string = '';
 
 	let durationAsString = '--:--';
+	let roundedDurationAsString = '--:--';
 	const eventDispatcher = createEventDispatcher();
 
 	onMount(() => {
@@ -28,8 +29,13 @@
 			}
 		});
 
+		var coeff = 1000 * 60 * 5;
+		var rounded = new Date(Math.ceil(totalDuration.toMillis() / coeff) * coeff);
+		var roundedDuration = DurationDate.fromMillis(rounded);
+		durationAsTempoString = roundedDuration.toFormat(`hh'h' mm'm'`);
+
 		durationAsString = totalDuration.toFormat('hh:mm');
-		durationAsTempoString = totalDuration.toFormat(`hh'h' mm'm'`);
+		roundedDurationAsString = roundedDuration.toFormat(`hh'h' mm'm'`);
 
 		eventDispatcher('change');
 	}
@@ -41,6 +47,9 @@
 
 <div class="mb-1">
 	Duration: {durationAsString}
+	<div style="float: right;">
+		{roundedDurationAsString}
+	</div>
 </div>
 
 {#each durations as { duration, startTime, endTime }}

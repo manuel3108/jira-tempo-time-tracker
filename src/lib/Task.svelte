@@ -46,7 +46,7 @@
 	<div class="left pr-2">
 		<div class="mb-1">
 			Ticket & description
-			<button class="button is-primary ml-2" on:click={copyDuration}>Copy Duration</button>
+			<button class="button is-primary ml-2" on:click={copyDuration}>Copy rounded duration</button>
 			<button class="button is-primary ml-2" on:click={copyDescription}>Copy description</button>
 			<button class="button is-primary ml-2" on:click={copyTicket}>Copy ticket</button>
 		</div>
