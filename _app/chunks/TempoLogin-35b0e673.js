@@ -1,0 +1,1 @@
+function r(n,o){return`https://${n}/plugins/servlet/ac/io.tempo.jira/oauth-authorize/?client_id=${o}&redirect_uri=${e()}`}function t(){return window.location.origin+"/login/tempo/callback"}function e(){return encodeURIComponent(t())}export{r as a,t as g};

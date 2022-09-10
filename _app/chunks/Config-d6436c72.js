@@ -1,1 +1,0 @@
-import{C as t,J as o,a}from"./Defaults-2a83e164.js";function s(){return localStorage.getItem(t)!=null}function c(){return JSON.parse(localStorage.getItem(t))}function g(e,n){localStorage.setItem(o,e),localStorage.setItem(a,n)}function i(){return localStorage.getItem(o)}function l(){return localStorage.getItem(a)}export{l as a,s as c,i as g,c as l,g as s};

@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="description" content="" />
-		<link rel="icon" href="./favicon.png" />
-		<link rel="manifest" href="./manifest.json" />
+		<link rel="icon" href="../../favicon.png" />
+		<link rel="manifest" href="../../manifest.json" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<script type="module">
 			import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
@@ -13,14 +13,14 @@
 		</script>
 		<meta http-equiv="content-security-policy" content="">
 	<link rel="stylesheet" href="/_app/assets/pages/__layout.svelte-2b4088c5.css">
-	<link rel="stylesheet" href="/_app/assets/pages/index.svelte-3c1f45f7.css">
 	<link rel="modulepreload" href="/_app/start-fc18a71b.js">
 	<link rel="modulepreload" href="/_app/chunks/vendor-57c42864.js">
 	<link rel="modulepreload" href="/_app/chunks/singletons-d1fb5791.js">
 	<link rel="modulepreload" href="/_app/pages/__layout.svelte-7456b731.js">
-	<link rel="modulepreload" href="/_app/pages/index.svelte-cce49cae.js">
+	<link rel="modulepreload" href="/_app/pages/login/tempo/redirect.svelte-198f0adc.js">
 	<link rel="modulepreload" href="/_app/chunks/Config-780b23b7.js">
 	<link rel="modulepreload" href="/_app/chunks/Defaults-9df7d6c8.js">
+	<link rel="modulepreload" href="/_app/chunks/TempoLogin-35b0e673.js">
 	</head>
 	<body>
 		<div id="svelte">
@@ -37,21 +37,14 @@
 			<a href="/login/tempo/redirect" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Tempo Login
 			</a></div></div></nav>
 
-<main class="svelte-au7v14"><div class="mb-2 header svelte-1ezz3gi"><div class="left">Total Duration: --:--</div>
-	<div class="right"><button class="button is-primary mt-1">Download</button>
-		<div class="file-upload-wrapper svelte-1ezz3gi"><label class="file-upload"><span class="mt-2 text-center leading-normal">Upload</span>
-				<input type="file" class="hidden button is-primary" accept=".json"></label></div></div></div>
-
-
-
-<button class="button is-primary mt-1 add-task svelte-1ezz3gi">Add Task</button>
+<main class="svelte-au7v14"><button class="button is-primary">Login to Tempo</button>
 </main>
 
 
-		<script type="module" data-hydrate="12c22xp">
+		<script type="module" data-hydrate="mtqoyu">
 		import { start } from "/_app/start-fc18a71b.js";
 		start({
-			target: document.querySelector('[data-hydrate="12c22xp"]').parentNode,
+			target: document.querySelector('[data-hydrate="mtqoyu"]').parentNode,
 			paths: {"base":"","assets":""},
 			session: {},
 			route: true,
@@ -62,7 +55,7 @@
 				error: null,
 				nodes: [
 					import("/_app/pages/__layout.svelte-7456b731.js"),
-						import("/_app/pages/index.svelte-cce49cae.js")
+						import("/_app/pages/login/tempo/redirect.svelte-198f0adc.js")
 				],
 				params: {}
 			}
