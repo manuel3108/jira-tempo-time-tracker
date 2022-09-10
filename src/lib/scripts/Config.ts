@@ -1,10 +1,21 @@
-import { CONFIG_COOKIE_NAME, JIRA_ACCESS_TOKEN_NAME, JIRA_REFRESH_TOKEN_NAME } from './Defaults';
+import {
+	CONFIG_COOKIE_NAME,
+	JIRA_ACCESS_TOKEN_NAME,
+	JIRA_REFRESH_TOKEN_NAME,
+	TEMPO_ACCESS_TOKEN_NAME,
+	TEMPO_REFRESH_TOKEN_NAME
+} from './Defaults';
 
 interface Config {
 	jira: {
 		clientId: string;
 		clientSecret: string;
 		cloudId: string;
+		domain: string;
+	};
+	tempo: {
+		clientId: string;
+		clientSecret: string;
 	};
 }
 
@@ -20,6 +31,11 @@ export function loadConfig(): Config {
 export function saveJiraTokens(accessToken: string, refreshToken: string): void {
 	localStorage.setItem(JIRA_ACCESS_TOKEN_NAME, accessToken);
 	localStorage.setItem(JIRA_REFRESH_TOKEN_NAME, refreshToken);
+}
+
+export function saveTempoTokens(accessToken: string, refreshToken: string): void {
+	localStorage.setItem(TEMPO_ACCESS_TOKEN_NAME, accessToken);
+	localStorage.setItem(TEMPO_REFRESH_TOKEN_NAME, refreshToken);
 }
 
 export function getJiraAccessToken(): string {

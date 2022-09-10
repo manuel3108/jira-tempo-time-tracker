@@ -23,6 +23,12 @@
 			>
 				Jira Login
 			</a>
+			<a
+				href="/login/tempo/redirect"
+				class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+			>
+				Tempo Login
+			</a>
 		</div>
 	</div>
 </nav>
