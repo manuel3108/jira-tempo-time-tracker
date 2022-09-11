@@ -5,7 +5,9 @@
 	import Task from '$lib/Task.svelte';
 	import { onMount } from 'svelte';
 	import { Duration, DateTime } from 'luxon';
-	import { fetch, Body, ResponseType } from '@tauri-apps/api/http';
+	import { fetchTempoAccounts } from '$lib/scripts/TempoAPI';
+	import TempoAccount from '$lib/scripts/models/TempoAccount';
+	import { tempoAccounts } from '$lib/stores/common';
 
 	let tasks: TaskData[] = [];
 	let durationAsString = '--:--';
@@ -31,13 +33,17 @@
 
 		isMounted = true;
 
-		const response = await fetch('https://api.tempo.io/core/3/accounts/', {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${getTempoAccessToken()}`
+		const response: any = await fetchTempoAccounts();
+		response.forEach((accountData: any) => {
+			if ($tempoAccounts.filter((x) => x.key === accountData.key).length == 0) {
+				var tempoAccount = new TempoAccount();
+				tempoAccount.key = accountData.key;
+				tempoAccount.name = accountData.name;
+				tempoAccount.id = accountData.id;
+
+				$tempoAccounts.push(tempoAccount);
 			}
 		});
-		console.log(response);
 	});
 
 	function addTask() {
@@ -88,7 +94,6 @@
 		reader.onload = (e) => {
 			const data: string = e.target.result as string;
 			tasks = JSON.parse(data);
-			console.log(tasks, 'test');
 		};
 	}
 </script>

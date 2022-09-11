@@ -37,7 +37,7 @@ html {
 }
 
 .box {
-	@apply mt-6 mb-6 p-4 rounded-lg;
+	@apply my-6 p-4 rounded-lg;
 	background-color: var(--medium-grey);
 }
 
@@ -49,6 +49,11 @@ select {
 	@apply rounded-sm p-1.5;
 	background-color: var(--input-background-color);
 	border-color: var(--input-border-color);
+}
+
+select {
+	@apply mt-2;
+	width: 100%
 }
 
 .file-upload-wrapper {

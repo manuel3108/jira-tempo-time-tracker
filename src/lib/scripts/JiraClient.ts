@@ -2,6 +2,7 @@ import { getJiraAccessToken, getJiraRefreshToken, loadConfig, saveJiraTokens } f
 import type { IssueSearchResponse } from './models/IssueSearchResponse';
 import jwt_decode from 'jwt-decode';
 import { DateTime } from 'luxon';
+import type { JiraMyselfResponse } from './models/JiraMyselfResponse';
 
 function getBaseUrl() {
 	const config = loadConfig();
@@ -55,4 +56,34 @@ export async function searchIssues(query: string): Promise<IssueSearchResponse> 
 	return await makeApiCall<IssueSearchResponse>(
 		`rest/api/3/issue/picker?query=${query}&currentJQL=`
 	);
+}
+
+export async function getJiraProfile(): Promise<JiraMyselfResponse> {
+	return await makeApiCall<JiraMyselfResponse>(`rest/api/3/myself`);
+}
+
+export async function getIssueDetails(issueKey: string): Promise<any> {
+	return await makeApiCall<JiraMyselfResponse>(`/rest/api/3/issue/${issueKey}`);
+}
+
+export async function getIssueMetaData(issueKey: string): Promise<any> {
+	return await makeApiCall<JiraMyselfResponse>(`/rest/api/3/issue/${issueKey}/editmeta`);
+}
+
+export async function getTempoAccountForIssue(issueKey: string): Promise<string> {
+	const metaData = await getIssueMetaData(issueKey);
+	let tempoAccountFieldName = undefined;
+	for (const [key, value] of Object.entries(metaData.fields)) {
+		if (value.key !== undefined && value.key === 'io.tempo.jira__account') {
+			tempoAccountFieldName = key;
+			break;
+		}
+	}
+
+	if (tempoAccountFieldName == undefined) {
+		return '';
+	}
+
+	const issueDetails = await getIssueDetails(issueKey);
+	return issueDetails.fields[tempoAccountFieldName].id;
 }

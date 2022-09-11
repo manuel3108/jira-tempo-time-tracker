@@ -3,6 +3,7 @@
 	import Duration from './Duration.svelte';
 	import DurationData from './scripts/models/DurationData';
 	import { Duration as DurationDate } from 'luxon';
+	import { getDuration, getRoundedDuration } from './scripts/TaskHelper';
 
 	export let durations: DurationData[] = [];
 	export let durationAsTempoString: string = '';
@@ -18,19 +19,9 @@
 	});
 
 	function onChange() {
-		let totalDuration = DurationDate.fromMillis(0);
+		let totalDuration = getDuration(durations);
+		let rounded = getRoundedDuration(durations);
 
-		durations.forEach((duration) => {
-			if (
-				duration.duration.values != undefined &&
-				duration.duration.values.milliseconds != undefined
-			) {
-				totalDuration = totalDuration.plus(duration.duration);
-			}
-		});
-
-		var coeff = 1000 * 60 * 5;
-		var rounded = new Date(Math.ceil(totalDuration.toMillis() / coeff) * coeff);
 		var roundedDuration = DurationDate.fromMillis(rounded);
 		durationAsTempoString = roundedDuration.toFormat(`hh'h' mm'm'`);
 
