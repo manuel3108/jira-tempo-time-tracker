@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/env';
-
 	import { page } from '$app/stores';
 	import { loadConfig, saveJiraTokens } from '$lib/scripts/Config';
 	import { getJiraCallbackUrl } from '$lib/scripts/JiraLogin';
@@ -8,10 +6,6 @@
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
-		if (!browser) {
-			return;
-		}
-
 		const code = $page.url.searchParams.get('code');
 
 		const config = loadConfig();

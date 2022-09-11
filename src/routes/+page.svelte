@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { configExists } from '$lib/scripts/Config';
+	import { configExists, getTempoAccessToken, loadConfig } from '$lib/scripts/Config';
 	import TaskData from '$lib/scripts/models/TaskData';
 	import Task from '$lib/Task.svelte';
 	import { onMount } from 'svelte';
 	import { Duration, DateTime } from 'luxon';
+	import { fetch, Body, ResponseType } from '@tauri-apps/api/http';
 
 	let tasks: TaskData[] = [];
 	let durationAsString = '--:--';
@@ -23,12 +24,20 @@
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		if (!configExists()) {
 			goto('/upload/config');
 		}
 
 		isMounted = true;
+
+		const response = await fetch('https://api.tempo.io/core/3/accounts/', {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${getTempoAccessToken()}`
+			}
+		});
+		console.log(response);
 	});
 
 	function addTask() {

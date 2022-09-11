@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { loadConfig } from '$lib/scripts/Config';
 	import { getTempoAuthorizationUrl } from '$lib/scripts/TempoLogin';
+	import { onMount } from 'svelte';
+
+	let loginUrl = '';
+	onMount(() => {
+		const config1 = loadConfig();
+		loginUrl = getTempoAuthorizationUrl(config1.jira.domain, config1.tempo.clientId);
+	});
 
 	function doRedirect() {
 		const config = loadConfig();

@@ -1,21 +1,20 @@
 <script lang="ts">
-	import { browser } from '$app/env';
-
 	import { page } from '$app/stores';
 	import { loadConfig, saveTempoTokens } from '$lib/scripts/Config';
 	import { getTempoCallbackUrl } from '$lib/scripts/TempoLogin';
-
+	import { fetch, Body, ResponseType } from '@tauri-apps/api/http';
 	import { onMount } from 'svelte';
 
+	let a = '';
+
 	onMount(async () => {
-		if (!browser) {
+		const code = $page.url.searchParams.get('code');
+		if (code === null) {
 			return;
 		}
 
-		const code = $page.url.searchParams.get('code');
-
 		const config = loadConfig();
-		const data = {
+		const dataA: Record<string, string> = {
 			grant_type: 'authorization_code',
 			client_id: config.tempo.clientId,
 			client_secret: config.tempo.clientSecret,
@@ -25,15 +24,18 @@
 
 		const response = await fetch('https://api.tempo.io/oauth/token/', {
 			method: 'POST',
-			body: new URLSearchParams(data),
+			body: Body.text(new URLSearchParams(dataA).toString()),
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
+			responseType: ResponseType.JSON
 		});
 
-		const json = await response.json();
-		saveTempoTokens(json.access_token, json.refresh_token);
+		const data: any = response.data;
+		saveTempoTokens(data.access_token, data.refresh_token);
 	});
 </script>
 
 <a href="/" class="button is-primary">Go to application</a>
+
+{a}

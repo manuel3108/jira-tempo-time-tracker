@@ -38,6 +38,10 @@ export function saveTempoTokens(accessToken: string, refreshToken: string): void
 	localStorage.setItem(TEMPO_REFRESH_TOKEN_NAME, refreshToken);
 }
 
+export function getTempoAccessToken(): string {
+	return localStorage.getItem(TEMPO_ACCESS_TOKEN_NAME);
+}
+
 export function getJiraAccessToken(): string {
 	return localStorage.getItem(JIRA_ACCESS_TOKEN_NAME);
 }

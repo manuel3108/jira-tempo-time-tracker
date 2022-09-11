@@ -3,11 +3,11 @@
 
 	let showLogin = false;
 
-	function onFileSelected(event) {
+	function onFileSelected(event: any) {
 		let image = event.target.files[0];
 		let reader = new FileReader();
 		reader.readAsText(image);
-		reader.onload = (e) => {
+		reader.onload = (e: any) => {
 			const data: string = e.target.result as string;
 			const json = JSON.parse(data);
 			localStorage.setItem(CONFIG_COOKIE_NAME, JSON.stringify(json));
