@@ -80,7 +80,7 @@
 		<div class="inputs">
 			<div>
 				<div>Open Time table by default</div>
-				<input type="checkbox" bind:value={config.general.openTimeTable} />
+				<input type="checkbox" bind:checked={config.general.openTimeTable} />
 			</div>
 		</div>
 	</div>
