@@ -10,4 +10,10 @@
 	}
 </script>
 
+<div class="box">
+	<div>Information</div>
+	<br />
+	<div>Jira login is slow sometimes. Only press the button once, and wait!</div>
+</div>
+
 <button class="button is-primary" on:click={doRedirect}>Login to Jira</button>

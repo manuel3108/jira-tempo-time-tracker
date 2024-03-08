@@ -12,7 +12,7 @@ import { getJiraProfile } from './JiraClient';
 import { getTempoCallbackUrl } from './TempoLogin';
 
 const TEMPO_BASE_URL = 'https://api.tempo.io';
-const TEMPO_V3_BASE_URL = TEMPO_BASE_URL + '/core/3';
+const TEMPO_V3_BASE_URL = TEMPO_BASE_URL + '/4';
 
 export async function fetchTokensFromCode(code: string): Promise<Response<any>> {
 	const config = loadConfig();
@@ -42,20 +42,21 @@ export async function fetchTempoAccounts() {
 }
 
 export async function bookTempoWorklog(
-	issueKey: string,
+	issueId: number,
 	description: string,
 	accountKey: string,
-	timeSpent: number
+	timeSpent: number,
+	starTime: DateTime
 ) {
 	timeSpent = timeSpent / 1000;
 	const jiraProfile = await getJiraProfile();
 
 	const requestData = {
-		issueKey: issueKey,
+		issueId,
 		timeSpentSeconds: timeSpent,
 		billableSeconds: timeSpent,
 		startDate: DateTime.now().toFormat('yyyy-MM-dd'),
-		startTime: '08:00:00',
+		startTime: starTime.toFormat("HH:mm:ss"),
 		description: description,
 		authorAccountId: jiraProfile.accountId,
 		attributes: [
@@ -67,7 +68,7 @@ export async function bookTempoWorklog(
 	};
 
 	const response = await makeTempoRequest(TEMPO_V3_BASE_URL + '/worklogs', 'POST', requestData);
-	console.log(response);
+	return response.errors as {message:string}[];
 }
 
 // Note: We use the http server provided by tauri here, because we will get cors problems otherwise

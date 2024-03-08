@@ -7,7 +7,7 @@ import {
 	TEMPO_EXPIRES_IN_TOKEN_NAME
 } from './Defaults';
 
-interface Config {
+export interface Config {
 	jira: {
 		clientId: string;
 		clientSecret: string;
@@ -18,6 +18,9 @@ interface Config {
 		clientId: string;
 		clientSecret: string;
 	};
+	general: {
+		openTimeTable: boolean;
+	}
 }
 
 export function configExists(): boolean {
@@ -25,7 +28,7 @@ export function configExists(): boolean {
 }
 
 export function loadConfig(): Config {
-	const config = JSON.parse(localStorage.getItem(CONFIG_COOKIE_NAME) ?? '');
+	const config = JSON.parse(localStorage.getItem(CONFIG_COOKIE_NAME) ?? '{}');
 	return config;
 }
 

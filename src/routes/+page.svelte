@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { configExists, getTempoAccessToken, loadConfig } from '$lib/scripts/Config';
+	import { configExists, getTempoAccessToken, loadConfig, type Config } from '$lib/scripts/Config';
 	import TaskData from '$lib/scripts/models/TaskData';
 	import Task from '$lib/Task.svelte';
 	import { onMount } from 'svelte';
@@ -8,11 +8,15 @@
 	import { fetchTempoAccounts } from '$lib/scripts/TempoAPI';
 	import TempoAccount from '$lib/scripts/models/TempoAccount';
 	import { tempoAccounts } from '$lib/stores/common';
+	import TimeTable from '$lib/TimeTable.svelte';
 
 	let tasks: TaskData[] = [];
 	let durationAsString = '--:--';
 	let changeDetected = false;
 	let isMounted = false;
+	let showTimeTable = false;
+	let timeTable: TimeTable;
+	let config: Config;
 
 	$: {
 		if (isMounted) {
@@ -28,7 +32,7 @@
 
 	onMount(async () => {
 		if (!configExists()) {
-			goto('/upload/config');
+			goto('/settings');
 		}
 
 		isMounted = true;
@@ -44,6 +48,9 @@
 				$tempoAccounts.push(tempoAccount);
 			}
 		});
+
+		config = loadConfig();
+		showTimeTable = config.general.openTimeTable;
 	});
 
 	function addTask() {
@@ -64,6 +71,7 @@
 				}
 			});
 		});
+		timeTable.update();
 
 		durationAsString = totalDuration.toFormat('hh:mm');
 		changeDetected = true;
@@ -73,7 +81,7 @@
 		changeDetected = true;
 	}
 
-	function download(content, fileName, contentType) {
+	function download(content: string, fileName: string, contentType: string) {
 		var a = document.createElement('a');
 		var file = new Blob([content], { type: contentType });
 		a.href = URL.createObjectURL(file);
@@ -103,6 +111,9 @@
 		Total Duration: {durationAsString}
 	</div>
 	<div class="right">
+		<button class="button is-primary mt-1" on:click={() => (showTimeTable = !showTimeTable)}
+			>Time Table</button
+		>
 		<button class="button is-primary mt-1" on:click={downloadTasks}>Download</button>
 		<div class="file-upload-wrapper">
 			<label class="file-upload">
@@ -118,10 +129,13 @@
 	</div>
 </div>
 
+<TimeTable bind:this={timeTable} bind:showTimeTable {tasks} />
+
 {#each tasks as task}
 	<Task
 		bind:description={task.description}
 		bind:issueKey={task.issue}
+		bind:issueName={task.issueName}
 		bind:durations={task.durations}
 		on:timeChange={onTimeChange}
 		on:textChange={onTextChange}

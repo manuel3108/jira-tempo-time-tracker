@@ -7,16 +7,19 @@
 	import { bookTempoWorklog } from './scripts/TempoAPI';
 	import Search from './Search.svelte';
 	import Times from './Times.svelte';
-	import { tempoAccounts } from '$lib/stores/common';
 
 	export let description = '';
 	export let issueKey = '';
+	export let issueId = 0;
+	export let issueName = '';
 	export let durations: DurationData[];
 	let durationAsTempoString = '';
 	let accountId = '';
 	let taskBooked = false;
 	let taskBookButtonText = 'Book time';
 	let isCurrentTask = false;
+	let showErrors = false;
+	let errors: { message: string }[] = [];
 
 	let eventDispatcher = createEventDispatcher();
 
@@ -70,11 +73,25 @@
 		taskBookButtonText = 'Waiting...';
 
 		const roundedDuration = getRoundedDuration(durations);
+		const startingTime = durations[0].startTime;
 		const accountKey = convertAccountIdToAccountKey(accountId);
-		await bookTempoWorklog(issueKey, description, accountKey, roundedDuration);
+		const localErrors = await bookTempoWorklog(
+			issueId,
+			description,
+			accountKey,
+			roundedDuration,
+			startingTime
+		);
 
-		taskBooked = true;
-		taskBookButtonText = 'Booked!';
+		if (!localErrors || localErrors.length == 0) {
+			taskBooked = true;
+			taskBookButtonText = 'Booked!';
+			showErrors = false;
+		} else {
+			taskBookButtonText = 'Failed! Book again';
+			showErrors = true;
+			errors = localErrors;
+		}
 	}
 </script>
 
@@ -89,7 +106,7 @@
 				<button class="button is-primary ml-2" on:click={copyTicket}>Copy ticket</button>
 			</div>
 
-			<Search bind:issueKey />
+			<Search bind:issueKey bind:issueId bind:issueName />
 			<Accounts bind:accountKey={accountId} />
 			<textarea class="mt-2" bind:value={description} />
 		</div>
@@ -98,18 +115,18 @@
 			<button disabled={taskBooked} on:click={bookTempoTime} class="button is-primary">
 				{taskBookButtonText}
 			</button>
+
+			{#if showErrors}
+				{#each errors as error}
+					<div>{error.message}</div>
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<div class="task-overlay" class:active={taskBooked} class:booked={taskBooked} />
 </div>
 
 <style>
-	@keyframes currentTaskAnimation {
-		50% {
-			background-color: #436d9a55;
-		}
-	}
-
 	.task-wrapper {
 		position: relative;
 	}
@@ -128,9 +145,7 @@
 	}
 
 	.task.current-task {
-		animation-name: currentTaskAnimation;
-		animation-duration: 5s;
-		animation-iteration-count: infinite;
+		background-color: #436d9a55;
 	}
 
 	textarea {

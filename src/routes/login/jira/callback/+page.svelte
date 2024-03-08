@@ -30,4 +30,4 @@
 	});
 </script>
 
-<a href="/" class="button is-primary">Go to application</a>
+<a href="/login/tempo/redirect" class="button is-primary">Go to tempo login</a>

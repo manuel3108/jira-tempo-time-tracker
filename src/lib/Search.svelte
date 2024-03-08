@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-
 	import { searchIssues } from './scripts/JiraClient';
 	import type { Section } from './scripts/models/IssueSearchResponse';
+	import { clickOutside } from './scripts/clickOutside.js';
 
-	export let issueKey;
+	export let issueKey = '';
+	export let issueId = 0;
+	export let issueName = '';
 
 	let sections: Section[] = [];
 	let searchElement: HTMLInputElement;
 	let searchResultsOpen = false;
+	let debounceTimer = 0;
 
 	onMount(() => {
 		if (issueKey != undefined) {
@@ -16,7 +19,14 @@
 		}
 	});
 
-	async function search(e) {
+	function search(e) {
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(() => {
+			searchDebounce(e);
+		}, 200);
+	}
+
+	async function searchDebounce(e) {
 		const value = e.target.value;
 
 		if (!value) return;
@@ -26,18 +36,25 @@
 		searchResultsOpen = true;
 	}
 
-	async function selectResult(key, text) {
+	async function selectResult(id: number, key: string, text: string) {
 		searchElement.value = `${key} - ${text}`;
 		searchResultsOpen = false;
 
 		issueKey = key;
+		issueId = id;
+		issueName = text;
 	}
 </script>
 
 <div class="search">
 	<input type="text" bind:this={searchElement} on:keyup={search} placeholder="issue" />
 
-	<div class="suggestions p-2" class:open={searchResultsOpen}>
+	<div
+		class="suggestions p-2"
+		class:open={searchResultsOpen}
+		use:clickOutside
+		on:click_outside={() => (searchResultsOpen = false)}
+	>
 		{#each sections as section}
 			<div class="section pb-2">
 				{section.label}
@@ -45,7 +62,7 @@
 					<div>
 						<button
 							class="p-1 rounded-sm"
-							on:click={() => selectResult(issue.key, issue.summaryText)}
+							on:click={() => selectResult(issue.id, issue.key, issue.summaryText)}
 							>{@html issue.keyHtml} {@html issue.summary}</button
 						>
 					</div>
